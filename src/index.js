@@ -23,8 +23,8 @@ app.use(express.json());
 //Template engine
 app.engine(
     "hbs",
-    engine({
-        extname: ".hbs",
+       engine({
+        extname   : ".hbs",
     }),
 );
 app.set("view engine", "hbs");
