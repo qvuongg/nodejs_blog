@@ -12,15 +12,18 @@
     "type": "git",
     "url": "git+https://github.com/qvuongg/nodejs_blog.git"
   },
-  
     "lint-staged": {
-      "src/**/*.{js,json,scss}": "prettier --singer-quote --trailing-comma all --tab-width 4 --write"
+      "src/**/*.{js,json,scss}": [
+        "prettier --single-quote --trailing-comma all --tab-width 4 --write",
+        "git add"
+      ]
     },
-    "husky":{
+    "husky": {
       "hooks": {
         "pre-commit": "lint-staged"
-    }
-  },
+      }
+    },
+  
   
   "keywords": [
     "blog",
