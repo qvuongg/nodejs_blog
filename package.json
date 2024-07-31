@@ -12,11 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/qvuongg/nodejs_blog.git"
   },
+ 
     "lint-staged": {
-      "src/**/*.{js,json,scss}": [
-        "prettier --single-quote --trailing-comma all --tab-width 4 --write",
-        "git add"
-      ]
+      "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
     },
     "husky": {
       "hooks": {
