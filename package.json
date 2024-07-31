@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
+    "beautiful": "lint-staged",
     "start": "nodemon --inspect src/index.js",
     "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +12,15 @@
     "type": "git",
     "url": "git+https://github.com/qvuongg/nodejs_blog.git"
   },
+  
+    "lint-staged": {
+      "src/**/*.{js,json,scss}": "prettier --singer-quote --trailing-comma all --tab-width 4 --write"
+    },
+    "husky":{
+      "hooks": {
+        "pre-commit": "lint-staged"
+    },
+  
   "keywords": [
     "blog",
     "nodejs"
@@ -27,8 +37,11 @@
     "express-handlebars": "^7.1.3"
   },
   "devDependencies": {
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.7",
     "morgan": "^1.10.0",
     "node-sass": "^9.0.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3"
   }
 }
