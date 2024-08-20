@@ -31,13 +31,14 @@
             <tr>
                 <th scope="col" colspan="2">#</th>
                 <th scope="col">Tên khoá học
-                  <a href="?_sort&column=name&type=desc">
-                  <i class="fa-solid fa-sort"></i>
-                </a>
+                {{{sortable 'name' _sort}}}
                 </th>
-                
-                <th scope="col">Trình độ</th>
-                <th scope="col" colspan="2">Thời gian đào tạo</th>
+                <th scope="col">Trình độ
+                  {{{sortable 'level' _sort}}}
+                </th>
+                <th scope="col" colspan="2">Thời gian đào tạo
+                  {{{sortable 'createdAt' _sort}}}
+                </th>
             </tr>
         </thead>
         <tbody>
