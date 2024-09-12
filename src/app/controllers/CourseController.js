@@ -1,5 +1,8 @@
 const Course = require('../models/Course')
 const { mongooseToObject } = require('../../util/mongoose')
+const multer = require('multer');
+const path = require('path');
+
 
 class CourseController {
     // Get /courses
@@ -14,14 +17,31 @@ class CourseController {
    create(req , res, next){
         res.render('courses/create')
    }
-   store(req , res, next){
-        
-        const course = new Course(req.body);
-        course
-            .save()
-            .then(() => res.redirect('/me/stored/courses'))
-            .catch(error =>{})
+   store(req, res, next) {
+    try { 
+        console.log('Form data:', req.body);
+        const course = new Course({
+            name: req.body.name,
+            description: req.body.description,
+            videoId: req.body.videoId,
+            image: 'uploa/img',
+            level: req.body.level
+        });
+
+        // Lưu khóa học vào cơ sở dữ liệu
+        course.save()
+            .then(() => {
+                res.json({ message: 'Course saved successfully' });
+            })
+            .catch(error => {
+                console.error('Error saving course:', error); // In lỗi ra console
+                res.status(500).json({ error: 'Error saving course', details: error });
+            });
+    } catch (error) {
+        console.error('Error processing course:', error); // In lỗi ra console
+        res.status(500).json({ error: 'Internal Server Error', details: error });
     }
+}
     edit(req , res, next){
         Course.findById(req.params.id)
             .then(course => res.render('courses/edit',{
@@ -32,8 +52,9 @@ class CourseController {
     }
     //[PUT] /courses/:id
     update (req, res, next){
-        Course.updateOne({_id: req.params.id}, req.body)
-            .then(() => res.redirect('/me/stored/courses'))
+        const updateData = req.file ? { ...req.body, image: `/uploads/${req.file.filename}` } : req.body;
+        Course.updateOne({_id: req.params.id}, updateData)
+            .then(() => res.redirect('/home'))
             .catch(next)
     }
         //[delete] /courses/:id

@@ -1,51 +1,65 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="flex-grow-1">
-      <a class="navbar-brand" href="/">BK Insight</a>
+      <a class="navbar-brand" href="/">BK Insights</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
   </div>
- <div class="big-div">
-    {{#each cryptoData}}
-        <div class="small-div-horizontal">
-            <h3 class="name-coin">{{this.name}}</h3>
-            <h3 class="price">$ {{this.price}}</h3>
-             <h3 class="volatility {{#if this.isPositive}}positive{{else}}negative{{/if}}">
-                {{#if this.isPositive}}
-                    &#9660; {{this.volatility}}%
-                {{else}}
-                    &#9650; {{this.volatility}}%
-                {{/if}}
-            </h3>
-        </div>
-    {{/each}}
-</div>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">  
-      <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-            <img src="https://yt3.ggpht.com/yti/ANjgQV9zZuQaBtpmNBJIk-Z6PDL0h9ZWTRepQwItEXac1EGDCL0=s88-c-k-c0x00ffffff-no-rj" alt="" class="user-avatar">
-            Quốc Vương
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/courses/create">Đăng khoá học</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/me/stored/courses">Khoá học của tôi</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/me/stored/courses">Bài đăng của tôi</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Đăng xuất</a>
-          </div>
+  <!-- Giá các đồng coin -->
+    <div class="crypto-prices d-flex flex-grow-1 justify-content-center">
+      {{#each cryptoData}}
+      <div class="small-div-horizontal text-center mx-3">
+        <h3 class="name-coin">{{this.name}}</h3>
+        <h3 class="price">$ {{this.price}}</h3>
+        <h3 class="volatility {{#if this.isPositive}}positive{{else}}negative{{/if}}">
+          {{#if this.isPositive}}
+            &#9650; {{this.volatility}}%
+          {{else}}
+            &#9660; {{this.volatility}}%
+          {{/if}}
+        </h3>
+      </div>
+      {{/each}}
+    </div>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                <img src="" alt="" class="user-avatar">
+                {{user.userName}}
+            </a>
+            <div class="dropdown-menu">
+                <span class="dropdown-item">{{user.email}}</span>
+                <div class="dropdown-divider"></div>
+
+                <!-- Hiển thị các item cho admin -->
+                {{#ifRole user.role 'admin'}}
+                    <a class="dropdown-item" href="/courses/create">Đăng khoá học</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/me/stored/courses">Khoá học của tôi</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/me/stored/courses">Bài đăng của tôi</a>
+                {{/ifRole}}
+
+                <!-- Hiển thị các item cho user -->
+                {{#ifRole user.role 'user'}}
+                    <a class="dropdown-item" href="/user/saved">Saved</a>
+                {{/ifRole}}
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
+            </div>
         </li>
-        </ul> 
-    </div>  
+    </ul>
+</div>
+
 
 </nav>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="
     padding-left: 30px;
     padding-right: 30px;" >
   <div class="collapse navbar-collapse" id="navbarSupportedContent-1">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="#">Trang Chủ <span class="sr-only">(current)</span></a>
       </li>
@@ -88,3 +102,60 @@
 
   </div>
 </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const logoutLink = document.querySelector('a[href="/auth/logout"]');
+
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]') 
+                ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') 
+                : '';
+
+            if (!csrfToken) {
+                console.error('CSRF token not found!');
+                return;
+            }
+
+            fetch('/auth/logout', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            })
+            .then(response => {
+                // Kiểm tra xem phản hồi có hợp lệ không
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Chuyển đổi phản hồi thành JSON
+            })
+            .then(data => {
+                if (data.message === 'Đăng xuất thành công!') {
+                    const userMenu = document.querySelector('.navbar-nav.ml-auto');
+                    if (userMenu) { 
+                        userMenu.innerHTML = `
+                            <li class="nav-item">
+                                <a class="nav-link" href="/auth/login">Sign in</a>
+                            </li>
+                        `;
+                    }
+
+                    // Điều hướng tới trang đăng nhập
+                    window.location.href = '/auth/login';
+                } else {
+                    console.error('Error in response message:', data.message);
+                }
+            })
+            .catch(err => console.error('Error:', err));
+        });
+    } else {
+        console.error('Logout link not found!');
+    }
+});
+
+    </script>

@@ -1,26 +1,51 @@
 <div class="mt-4">
-    <h3>Dang khoa hoc</h3>
-    <form method="post" action="/courses/store">
+    <h3>Đăng khoá học</h3>
+    <form method="POST" action="/courses/store" enctype="multipart/form-data" id="course-form">
         <div class="form-group">
             <label for="name">Tên khoá học</label>
-            <input type="text" class="form-control" id="name" name="name" >      
+            <input type="text" class="form-control" id="name" name="name" required>
         </div>
         <div class="form-group">
-            <label for="name">Mô tả</label>
-            <input type="text" class="form-control" id="description" name="description" >      
+            <label for="description">Mô tả</label>
+            <textarea class="form-control" id="description" name="description" rows="10"></textarea>
+            <script
+                src="https://cdn.tiny.cloud/1/pjvq3go7lz26fedfe1kmtjmbzyycqsu637xcrwizdo92lq3r/tinymce/6/tinymce.min.js"
+                referrerpolicy="origin"></script>
+            <script>
+                tinymce.init({
+                    selector: '#description',
+                    setup: function (editor) {
+                        editor.on('change', function () {
+                            editor.save();
+                        });
+                    }
+                });
+            </script>
         </div>
         <div class="form-group">
-            <label for="name">Video ID</label>
-            <input type="text" class="form-control" id="videoId" name="videoId" >      
-        </div> 
-        <div class="form-group">
-            <label for="name">Image</label>
-            <input type="text" class="form-control" id="image" name="image" >      
-        </div> 
-        <div class="form-group">
-            <label for="name">Trình độ</label>
-            <input type="text" class="form-control" id="level" name="level" >      
+            <label for="videoId">Video ID</label>
+            <input type="text" class="form-control" id="videoId" name="videoId" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button> 
-</form>
+        <div class="form-group">
+            <label for="image">Hình ảnh</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+        </div>
+        <div class="form-group">
+            <label for="level">Trình độ</label>
+            <input type="text" class="form-control" id="level" name="level" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Đăng khoá học</button>
+    </form>
 </div>
+
+<script>
+    document.getElementById('course-form').addEventListener('submit', function (event) {
+        const name = document.getElementById('name').value.trim();
+        const videoId = document.getElementById('videoId').value.trim();
+        
+        if (!name || !videoId) {
+            event.preventDefault();
+            alert('Vui lòng nhập đầy đủ tên khoá học và Video ID.');
+        }
+    });
+</script>

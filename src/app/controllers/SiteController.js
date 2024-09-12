@@ -27,7 +27,8 @@ class SiteController {
         Course.find({})
             .then(courses => {
                 res.render('home', {
-                    courses: mutipleMongooseToObject(courses)
+                    courses: mutipleMongooseToObject(courses),
+                    success: req.flash('success')
                 });
             })
             .catch(next);

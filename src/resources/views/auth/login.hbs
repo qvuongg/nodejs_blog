@@ -1,0 +1,23 @@
+<div>
+    {{#if alert}}
+    <div class="alert alert-success">
+        {{alert}}
+    </div>
+    {{/if}}
+    <form method="POST" action="signin">
+        <h1>Đăng nhập</h1>
+        <div class="group-form">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email">
+        </div>
+        <div class="group-form">
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div class="group-form">
+            <button type="submit">Đăng nhập</button>
+            <a href="/auth/register" class="login-link">Đăng ký</a>
+        </div>
+    </form>
+</div>
+

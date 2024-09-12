@@ -1,60 +1,93 @@
-@import     "variables";
+/* Tổng thể cho navbar chính */
+.navbar {
+    background-color: #000; /* Màu nền đen */
+}
 
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #f8f9fa; /* Màu chữ trắng */
+}
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-}
-.card-course-item {
-    margin-top: 16px;
-}
-.user-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    margin-right: 4px;
-}
-.checkbox-select-all-options{
-    width: 200px;
-    margin: 0 16px;
-}
-.big-div {
-    
+/* Giá crypto */
+.crypto-prices {
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    max-width: 1200px;
 }
 
 .small-div-horizontal {
-    width: 15%;
-    background-color: #f4f4f4;
-    padding: 10px;
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 5px ;
+    background-color: #000;
+    padding: 0.5rem;
+    color: #f8f9fa;
 }
 
-
-.volatility.positive {
-    color: red;
-}
-
-.volatility.negative {
-    color: green;
-}
 .name-coin {
+    color: #ffb400; /* Màu vàng cho tên coin */
     font-size: 1.2rem;
     font-weight: bold;
 }
+
 .price {
-    font-size: 0.8rem;
-}
-.volatility {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
+.volatility {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.volatility.positive {
+    color: #28a745; /* Xanh lá */
+}
+
+.volatility.negative {
+    color: #dc3545; /* Đỏ */
+}
+
+/* Phần đăng nhập */
+.user-login a {
+    color: #5a5a5a;
+    border: 1px solid #717171;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.user-login a:hover {
+    background-color: #575757;
+    color: #000;
+}
+
+/* Navbar phụ */
+.navbar-light {
+    background-color: #ffb400;
+}
+
+.navbar-nav .nav-link {
+    color: #000;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffb400;
+    background-color: #565656;
+}
+
+/* Form tìm kiếm */
+.form-inline input {
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+.form-inline button {
+    border: 1px solid #000;
+    background-color: #ffb400;
+    color: #000;
+}
+
+.form-inline button:hover {
+    background-color: #000;
+    color: #ffb400;
+}

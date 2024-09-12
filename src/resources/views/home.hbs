@@ -1,4 +1,9 @@
+
 <div class="mt-4">
+    {{#if success}}
+    <div class="alert alert-success">{{success}}</div>
+    {{/if}}
+
     <div class="row">
         {{#each courses}}
         <div class="col-sm-6 col-lg-4">

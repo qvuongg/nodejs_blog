@@ -34,6 +34,14 @@ module.exports = {
             range.push(i);
         }
         return range;   
+    },
+    // Helper mới để kiểm tra vai trò
+    ifRole: (userRole, role, options) => {
+        if (userRole === role) {
+            return options.fn(this); // Thực hiện block nếu đúng vai trò
+        } else {
+            return options.inverse(this); // Thực hiện block ngược lại nếu sai vai trò
+        }
     }
 
     

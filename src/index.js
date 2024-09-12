@@ -3,14 +3,22 @@
 const express = require("express");
 const morgan = require("morgan");
 const axios = require('axios');
+const session = require('express-session');
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
 const app = express();
 const { engine } = require("express-handlebars");
 const port = 3000;
 const path = require("path");
+
 const methodOverride = require('method-override')
+
+const cloudinary = require('cloudinary').v2;
+
 
 const SortMiddleware = require('./app/middlewares/SortMiddleware')
 const CryptoPriceMiddleware = require('./app/middlewares/CryptoPriceMiddleware');
+const SetUserInfo = require('./app/middlewares/SetUserInfo');
 
 const route = require("./routes");
 const db = require("./config/db");
@@ -30,10 +38,36 @@ app.use(
 app.use(express.json());
 
 app.use(methodOverride('_method'))
+// Cấu hình session
+app.use(session({
+    secret: 'secret', // Bạn nên thay đổi secret này
+    resave: false,
+    saveUninitialized: true,
+}));
+
+// Cấu hình connect-flash
+app.use(flash());
+
+// Sử dụng cookie-parser middleware
+app.use(cookieParser());
+
+//Kêt nối claundinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  })
+
+  app.use(express.json({ limit: "5mb" }));
+
 
 //custom middleware
-app.use(SortMiddleware); 
 app.use(CryptoPriceMiddleware);
+app.use(SortMiddleware); 
+app.use(SetUserInfo);
+
+
+
 
 //Template engine
 app.engine(
@@ -53,3 +87,4 @@ route(app);
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
+
