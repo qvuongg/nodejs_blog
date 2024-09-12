@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const checkPermisson = require("../app/middlewares/CheckPermission");
 const courseController = require("../app/controllers/CourseController");
+const upload = require("../app/middlewares/uploadMiddleware");
 
 const path = require('path');
 
 
 router.get("/create",checkPermisson, courseController.create);
-router.post("/store",checkPermisson, courseController.store);
+router.post("/store",checkPermisson,courseController.store);
 router.get("/:id/edit",checkPermisson, courseController.edit);
 router.post("/handle-form-actions",checkPermisson, courseController.handleFormActions)
 router.put("/:id",checkPermisson,courseController.update);

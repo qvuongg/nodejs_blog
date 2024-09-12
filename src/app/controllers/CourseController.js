@@ -1,7 +1,8 @@
 const Course = require('../models/Course')
 const { mongooseToObject } = require('../../util/mongoose')
-const multer = require('multer');
 const path = require('path');
+const upload = require('../middlewares/uploadMiddleware');
+
 
 
 class CourseController {
@@ -18,29 +19,36 @@ class CourseController {
         res.render('courses/create')
    }
    store(req, res, next) {
-    try { 
-        console.log('Form data:', req.body);
+    // Sử dụng middleware upload để xử lý file
+    upload.single('image')(req, res, function (err) {
+        if (err) {
+            return res.status(500).send('Error uploading file to Cloudinary');
+        }
+
+        // Kiểm tra req.file và req.body
+        console.log('File:', req.file);
+        console.log('Body:', req.body);
+
+        // Lấy URL của hình ảnh đã upload trên Cloudinary
+        const imageUrl = req.file ? req.file.path : '';
+
+        // Tạo một đối tượng course mới với thông tin từ form
         const course = new Course({
             name: req.body.name,
             description: req.body.description,
             videoId: req.body.videoId,
-            image: 'uploa/img',
+            image: imageUrl,
             level: req.body.level
         });
 
-        // Lưu khóa học vào cơ sở dữ liệu
+        // Lưu khóa học vào database
         course.save()
-            .then(() => {
-                res.json({ message: 'Course saved successfully' });
-            })
+            .then(() => res.redirect('/me/stored/courses'))
             .catch(error => {
-                console.error('Error saving course:', error); // In lỗi ra console
-                res.status(500).json({ error: 'Error saving course', details: error });
+                console.error('Error saving course:', error);
+                res.status(500).send('Error saving course');
             });
-    } catch (error) {
-        console.error('Error processing course:', error); // In lỗi ra console
-        res.status(500).json({ error: 'Internal Server Error', details: error });
-    }
+    });
 }
     edit(req , res, next){
         Course.findById(req.params.id)
