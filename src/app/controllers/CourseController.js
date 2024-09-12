@@ -72,6 +72,7 @@ class CourseController {
         }
     }
 
+
 // Get post put patch delete options head
 }
 module.exports = new CourseController();

@@ -1,5 +1,11 @@
 @import     "variables";
 
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
 .card-course-item {
     margin-top: 16px;
 }
@@ -13,3 +19,42 @@
     width: 200px;
     margin: 0 16px;
 }
+.big-div {
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.small-div-horizontal {
+    width: 15%;
+    background-color: #f4f4f4;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 5px ;
+}
+
+
+.volatility.positive {
+    color: red;
+}
+
+.volatility.negative {
+    color: green;
+}
+.name-coin {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.price {
+    font-size: 0.8rem;
+}
+.volatility {
+    font-size: 0.8rem;
+}
+

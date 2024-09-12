@@ -2,6 +2,7 @@
 //npm run watch
 const express = require("express");
 const morgan = require("morgan");
+const axios = require('axios');
 const app = express();
 const { engine } = require("express-handlebars");
 const port = 3000;
@@ -9,6 +10,7 @@ const path = require("path");
 const methodOverride = require('method-override')
 
 const SortMiddleware = require('./app/middlewares/SortMiddleware')
+const CryptoPriceMiddleware = require('./app/middlewares/CryptoPriceMiddleware');
 
 const route = require("./routes");
 const db = require("./config/db");
@@ -31,6 +33,7 @@ app.use(methodOverride('_method'))
 
 //custom middleware
 app.use(SortMiddleware); 
+app.use(CryptoPriceMiddleware);
 
 //Template engine
 app.engine(

@@ -1,14 +1,27 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
+  <div class="flex-grow-1">
       <a class="navbar-brand" href="/">BK Insight</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+  </div>
+ <div class="big-div">
+    {{#each cryptoData}}
+        <div class="small-div-horizontal">
+            <h3 class="name-coin">{{this.name}}</h3>
+            <h3 class="price">$ {{this.price}}</h3>
+             <h3 class="volatility {{#if this.isPositive}}positive{{else}}negative{{/if}}">
+                {{#if this.isPositive}}
+                    &#9660; {{this.volatility}}%
+                {{else}}
+                    &#9650; {{this.volatility}}%
+                {{/if}}
+            </h3>
+        </div>
+    {{/each}}
+</div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-        
-    
+      <ul class="navbar-nav ml-auto">  
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
             <img src="https://yt3.ggpht.com/yti/ANjgQV9zZuQaBtpmNBJIk-Z6PDL0h9ZWTRepQwItEXac1EGDCL0=s88-c-k-c0x00ffffff-no-rj" alt="" class="user-avatar">
@@ -24,7 +37,54 @@
             <a class="dropdown-item" href="#">Đăng xuất</a>
           </div>
         </li>
-        </ul>
-    </div>
+        </ul> 
+    </div>  
+
+</nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="
+    padding-left: 30px;
+    padding-right: 30px;" >
+  <div class="collapse navbar-collapse" id="navbarSupportedContent-1">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Trang Chủ <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Giới Thiệu <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Tin Tức <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Phân Tích Thị Trường <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+          Kiến Thức - Hướng Dẫn
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Kiến thức cơ bản</a>
+          <a class="dropdown-item" href="#">Hướng dẫn</a>
+          <a class="dropdown-item" href="#">FAQS</a>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Pages <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Sàn Giao Dịch <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Tài Nguyên <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Cryptopedia <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
+    <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search" aria-label="Search" value="{{value}}">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
   </div>
 </nav>
