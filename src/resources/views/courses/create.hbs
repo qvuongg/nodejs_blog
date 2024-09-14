@@ -24,32 +24,3 @@
         <button type="submit" class="btn btn-primary">Đăng khoá học</button>
     </form>
 </div>
-
-<script>
-    document.getElementById('course-form').addEventListener('submit', async function (event) {
-        event.preventDefault(); // Ngăn chặn việc submit form thông thường
-
-        const formData = new FormData(this);
-
-        // Kiểm tra dữ liệu trong formData
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-
-        try {
-            const response = await fetch('/courses/store', {
-                method: 'POST',
-                body: formData
-            });
-            if (response.ok) {
-                window.location.href = '/courses';
-            } else {
-                alert('Có lỗi xảy ra khi lưu khóa học.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi kết nối đến server.');
-        }
-    });
-
-</script>
