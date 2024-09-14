@@ -1,27 +1,55 @@
 <div class="mt-4">
     <h3>Đăng khoá học</h3>
     <form method="POST" action="/courses/store" enctype="multipart/form-data" id="course-form">
-    <div class="form-group">
-        <label for="name">Tên khoá học</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-    </div>
-    <div class="form-group">
-        <label for="description">Mô tả</label>
-        <input type="text" class="form-control" id="description" name="description">
-    </div>
-    <div class="form-group">
-        <label for="videoId">Video ID</label>
-        <input type="text" class="form-control" id="videoId" name="videoId" required>
-    </div>
-    <div class="form-group">
-        <label for="image">Hình ảnh</label>
-        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
-    </div>
-    <div class="form-group">
-        <label for="level">Trình độ</label>
-        <input type="text" class="form-control" id="level" name="level" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Đăng khoá học</button>
-</form>
-
+        <div class="form-group">
+            <label for="name">Tên khoá học</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả</label>
+            <input type="text" class="form-control" id="description" name="description">
+        </div>
+        <div class="form-group">
+            <label for="videoId">Video ID</label>
+            <input type="text" class="form-control" id="videoId" name="videoId" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Hình ảnh</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label for="level">Trình độ</label>
+            <input type="text" class="form-control" id="level" name="level" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Đăng khoá học</button>
+    </form>
 </div>
+
+<script>
+    document.getElementById('course-form').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Ngăn chặn việc submit form thông thường
+
+        const formData = new FormData(this);
+
+        // Kiểm tra dữ liệu trong formData
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        try {
+            const response = await fetch('/courses/store', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                window.location.href = '/courses';
+            } else {
+                alert('Có lỗi xảy ra khi lưu khóa học.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi kết nối đến server.');
+        }
+    });
+
+</script>
