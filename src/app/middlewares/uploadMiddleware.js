@@ -6,9 +6,9 @@ const cloudinary = require('cloudinary').v2;
 
 // Cấu hình Cloudinary
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: "yddfduo44p",
+    api_key: "349472563946791",
+    api_secret: "x-d3PkfWy5VMLQWHE4MF6jgvP0c"
 });
 
 // Cấu hình lưu trữ với Cloudinary
@@ -20,7 +20,7 @@ const storage = new CloudinaryStorage({
     },
 });
 
-// Tạo instance multer với cấu hình lưu trữ
+// Tạo instance multer với cấu hình lưu trữ 
 const upload = multer({ storage: storage });
 
 // Export middleware upload

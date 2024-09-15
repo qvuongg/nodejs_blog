@@ -18,7 +18,7 @@ const methodOverride = require('method-override')
 
 
 
-
+const upload = require('./app/middlewares/uploadMiddleware');
 const SortMiddleware = require('./app/middlewares/SortMiddleware')
 const CryptoPriceMiddleware = require('./app/middlewares/CryptoPriceMiddleware');
 const SetUserInfo = require('./app/middlewares/SetUserInfo');
@@ -73,7 +73,7 @@ app.use(express.json({ limit: "5mb" }));
 app.use(CryptoPriceMiddleware);
 app.use(SortMiddleware); 
 app.use(SetUserInfo);
-
+app.use(upload.single('image'));
 
 
 

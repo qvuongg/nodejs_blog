@@ -19,37 +19,31 @@ class CourseController {
         res.render('courses/create')
    }
    store(req, res, next) {
-    // Sử dụng middleware upload để xử lý file
-    upload.single('image')(req, res, function (err) {
-        if (err) {
-            return res.status(500).send('Error uploading file to Cloudinary');
-        }
+    // Kiểm tra req.file và req.body
+    console.log('File:', JSON.stringify(req.file, null, 2));  // In ra thông tin file đã được upload
+    console.log('Body:', JSON.stringify(req.body, null, 2));  // In ra nội dung của form
 
-        // Kiểm tra req.file và req.body
-        console.log('File:', req.file);
-        console.log('Body:', req.body);
+    // Lấy URL của hình ảnh đã upload trên Cloudinary
+    const imageUrl = req.file ? req.file.path : '';
 
-        // Lấy URL của hình ảnh đã upload trên Cloudinary
-        const imageUrl = req.file ? req.file.path : '';
-
-        // Tạo một đối tượng course mới với thông tin từ form
-        const course = new Course({
-            name: req.body.name,
-            description: req.body.description,
-            videoId: req.body.videoId,
-            image: imageUrl,
-            level: req.body.level
-        });
-
-        // Lưu khóa học vào database
-        course.save()
-            .then(() => res.redirect('/me/stored/courses'))
-            .catch(error => {
-                console.error('Error saving course:', error);
-                res.status(500).send('Error saving course');
-            });
+    // Tạo một đối tượng course mới với thông tin từ form
+    const course = new Course({
+        name: req.body.name,
+        description: req.body.description,
+        videoId: req.body.videoId,
+        image: imageUrl,
+        level: req.body.level
     });
+
+    // Lưu khóa học vào database
+    course.save()
+        .then(() => res.redirect('/me/stored/courses'))
+        .catch(error => {
+            console.error('Error saving course:', error);
+            res.status(500).send('Error saving course');
+        });
 }
+
     edit(req , res, next){
         Course.findById(req.params.id)
             .then(course => res.render('courses/edit',{
