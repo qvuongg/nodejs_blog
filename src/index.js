@@ -1,8 +1,6 @@
 //npm start: web server cua nodejs
 //npm run watch
 const express = require("express");
-const morgan = require("morgan");
-const axios = require('axios');
 const session = require('express-session');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
@@ -12,7 +10,7 @@ const port = 3000;
 const path = require("path");
 const dotenv = require('dotenv');
 const helmet = require('helmet');
-
+const cloudinary = require('cloudinary').v2;
 const methodOverride = require('method-override')
 
 
@@ -32,16 +30,21 @@ dotenv.config();
 //connect to db
 db.connect()
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 //HTTP logger
 //app.use(morgan('combined'))
-app.use(
-    express.urlencoded({
-        extended: true,
-    }),
-);
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+//
+
+//Clouddinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.use(methodOverride('_method'))
 // Cấu hình session
@@ -57,12 +60,11 @@ app.use(flash());
 // Sử dụng cookie-parser middleware
 app.use(cookieParser());
 
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'none'"],
-            imgSrc: ["'self'", "data:"]
-        }
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", "https://res.cloudinary.com"],
+        scriptSrc: ["'self'", "https://cdn.jsdelivr.net"]
     }
 }));
 
@@ -71,7 +73,7 @@ app.use(express.json({ limit: "5mb" }));
 
 //custom middleware
 app.use(CryptoPriceMiddleware);
-app.use(SortMiddleware); 
+app.use(SortMiddleware);
 app.use(SetUserInfo);
 app.use(upload.single('image'));
 
@@ -85,8 +87,8 @@ app.engine(
         helpers: require('./helpers/handlebars')
     }),
 );
-   app.set("view engine", "hbs");
-            app.set("views", path.join(__dirname, 'resources','views'));
+app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, 'resources', 'views'));
 
 //Route init
 route(app);
