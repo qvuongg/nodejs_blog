@@ -2,6 +2,7 @@ const Course = require('../models/Course');
 const { mongooseToObject } = require('../../util/mongoose');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
+const moment = require('moment');
 
 class CourseController {
     // GET /courses/:slug
@@ -11,39 +12,6 @@ class CourseController {
             .catch(next);
     }
 
-<<<<<<< HEAD
-   }
-   create(req , res, next){
-        res.render('courses/create')
-   }
-   store(req, res, next) {
-    // Kiểm tra req.file và req.body
-    console.log('File:', JSON.stringify(req.file, null, 2));  // In ra thông tin file đã được upload
-    console.log('Body:', JSON.stringify(req.body, null, 2));  // In ra nội dung của form
-
-    // Lấy URL của hình ảnh đã upload trên Cloudinary
-    const imageUrl = req.file ? req.file.path : '';
-
-    // Tạo một đối tượng course mới với thông tin từ form
-    const course = new Course({
-        name: req.body.name,
-        description: req.body.description,
-        videoId: req.body.videoId,
-        image: imageUrl,
-        level: req.body.level
-    });
-
-    // Lưu khóa học vào database
-    course.save()
-        .then(() => res.redirect('/me/stored/courses'))
-        .catch(error => {
-            console.error('Error saving course:', error);
-            res.status(500).send('Error saving course');
-        });
-}
-
-    edit(req , res, next){
-=======
     // GET /courses/create
     create(req, res, next) {
         res.render('courses/create');
@@ -78,7 +46,6 @@ class CourseController {
 
     // GET /courses/edit/:id
     edit(req, res, next) {
->>>>>>> 62d0482d75ff04b6f693316c240ff7bf76ab804d
         Course.findById(req.params.id)
             .then(course => res.render('courses/edit', {
                 course: mongooseToObject(course)
@@ -131,6 +98,10 @@ class CourseController {
             default:
                 res.json({ message: 'Action invalid' });
         }
+    }
+    // Hàm định dạng ngày với moment.js
+    formatDate(date) {
+        return moment(date).fromNow();  // Ví dụ: "2 days ago"
     }
 }
 

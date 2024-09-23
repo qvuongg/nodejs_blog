@@ -1,25 +1,53 @@
 
-<div class="mt-4">
+<div class="container mt-4">
     {{#if success}}
     <div class="alert alert-success">{{success}}</div>
     {{/if}}
 
     <div class="row">
-        {{#each courses}}
-        <div class="col-sm-6 col-lg-4">
-            <div class="card card-course-item" style="width: 18rem;">
+        <!-- Main course (middle) -->
+        <div class="col-lg-8 mb-4">
+            {{#each courses}}
+            {{#if @last}} <!-- Nếu là khóa học đầu tiên -->
+            <div class="card card-course-item h-100">
                 <a href="/courses/{{this.slug}}">
-                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name }}">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
                 </a>
-            <div class="card-body">
-                <a href="/courses/{{this.slug}}">
-                    <h5 class="card-title">{{this.name }}</h5>
-                </a>
-                <p class="card-text">{{this.descripsion}}</p>
-                <a href="#" class="btn btn-primary">Mua khoá học</a>
+                <div class="card-body">
+                    <a href="/courses/{{this.slug}}">
+                        <h3 class="card-title">{{this.name}}</h3>
+                    </a>
+                    <p class="card-text">{{this.description}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">{{this.user}}</span>
+                        <span class="text-muted">• {{formatDate this.createdAt}}</span>
+                    </div>
+                    <a href="/courses/{{this.slug}}" class="btn btn-primary mt-3">Xem chi tiết</a>
+                </div>
             </div>
-            </div>
+            {{/if}}
+            {{/each}}
         </div>
-        {{/each}}
+
+        <!-- Sidebar courses (right) -->
+        <div class="col-lg-4">
+            {{#each courses}}
+            {{#unless @last }} <!-- Nếu không phải là khóa học đầu tiên -->
+            <div class="card mb-4">
+                <a href="/courses/{{this.slug}}">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+                </a>
+                <div class="card-body">
+                    <a href="/courses/{{this.slug}}">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <p class="card-text">{{this.description}}</p>
+                    <div class="text-muted">{{this.user}} • {{formatDate this.createdAt}}</div>
+                </div>
+            </div>
+            {{/unless}}
+            {{/each}}
+        </div>
     </div>
 </div>
+

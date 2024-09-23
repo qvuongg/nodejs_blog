@@ -1,4 +1,5 @@
 const Handlebars = require('handlebars');
+const moment = require('moment');
 
 module.exports = {
     sum: (a, b) => a + b,
@@ -42,7 +43,9 @@ module.exports = {
         } else {
             return options.inverse(this); // Thực hiện block ngược lại nếu sai vai trò
         }
-    }
-
+    },
+    formatDate: (date) => {
+        return moment(date).fromNow(); // Ví dụ: "2 days ago"
+    },
     
 };
